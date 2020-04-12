@@ -1,0 +1,33 @@
+#Logstash filters for Microsoft Exchange Logging HttpProxy
+#HttpProxy Ecp 
+#HttpProxy Owa
+#HttpProxy Ews
+
+input {
+	file {
+	path => "Microsoft\Exchange Server\V15\Logging\*"
+	sincedb_path => "/dev/null"
+	start_position => "beginning"
+	}
+}
+
+filter {
+   grok {
+     match => { "message" => "(?<DateTime>(.*?)),(?<RequestId>(.*?)),(?<MajorVersion>(.*?)),(?<MinorVersion>(.*?)),(?<BuildVersion>(.*?)),(?<RevisionVersion>(.*?)),(?<ClientRequestId>(.*?)),(?<Protocol>(.*?)),(?<UrlHost>(.*?)),(?<UrlStem>(.*?)),(?<ProtocolAction>(.*?)),(?<AuthenticationType>(.*?)),(?<IsAuthenticated>(.*?)),(?<AuthenticatedUser>(.*?)),(?<Organization>(.*?)),(?<AnchorMailbox>(.*?)),(?<UserAgent>(.*?)),(?<ClientIpAddress>(.*?)),(?<ServerHostName>(.*?)),(?<HttpStatus>(.*?)),(?<BackEndStatus>(.*?)),(?<ErrorCode>(.*?)),(?<Method>(.*?)),(?<ProxyAction>(.*?)),(?<TargetServer>(.*?)),(?<TargetServerVersion>(.*?)),(?<RoutingType>(.*?)),(?<RoutingHint>(.*?)),(?<BackEndCookie>(.*?)),(?<ServerLocatorHost>(.*?)),(?<ServerLocatorLatency>(.*?)),(?<RequestBytes>(.*?)),(?<ResponseBytes>(.*?)),(?<TargetOutstandingRequests>(.*?)),(?<AuthModulePerfContext>(.*?)),(?<HttpPipelineLatency>(.*?)),(?<CalculateTargetBackEndLatency>(.*?)),(?<GlsLatencyBreakup>(.*?)),(?<TotalGlsLatency>(.*?)),(?<AccountForestLatencyBreakup>(.*?)),(?<TotalAccountForestLatency>(.*?)),(?<ResourceForestLatencyBreakup>(.*?)),(?<TotalResourceForestLatency>(.*?)),(?<ADLatency>(.*?)),(?<SharedCacheLatencyBreakup>(.*?)),(?<TotalSharedCacheLatency>(.*?)),(?<ActivityContextLifeTime>(.*?)),(?<ModuleToHandlerSwitchingLatency>(.*?)),(?<ClientReqStreamLatency>(.*?)),(?<BackendReqInitLatency>(.*?)),(?<BackendReqStreamLatency>(.*?)),(?<BackendProcessingLatency>(.*?)),(?<BackendRespInitLatency>(.*?)),(?<BackendRespStreamLatency>(.*?)),(?<ClientRespStreamLatency>(.*?)),(?<KerberosAuthHeaderLatency>(.*?)),(?<HandlerCompletionLatency>(.*?)),(?<RequestHandlerLatency>(.*?)),(?<HandlerToModuleSwitchingLatency>(.*?)),(?<ProxyTime>(.*?)),(?<CoreLatency>(.*?)),(?<RoutingLatency>(.*?)),(?<HttpProxyOverhead>(.*?)),(?<TotalRequestTime>(.*?)),(?<TotalRequestTime>(.*?)),(?<RouteRefresherLatency>(.*?)),(?<UrlQuery>(.*?)),(?<BackEndGenericInfo>(.*?))"
+
+     }
+
+	}
+
+
+geoip {
+       source => "ClientIpAddress"
+    }
+}
+
+output  {
+       elasticsearch { 
+        hosts => "localhost:9200"
+	index => "file-name"
+	}
+}
