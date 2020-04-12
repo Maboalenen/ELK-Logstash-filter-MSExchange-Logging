@@ -1,5 +1,5 @@
 # ELK-MSExchange-Logging
-ELK logstatsh Microsoft Exchnage Logging HttpProxy 
+logstatsh Filtering for Microsoft Exchnage Logging HttpProxy 
 MS-Path C:\Program Files\Microsoft\Exchange Server\V15\Logging\HttpProxy
 For Ecp , Owa and Ews with below Fields
 
