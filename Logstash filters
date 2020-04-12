@@ -31,7 +31,7 @@ geoip {
 
 output  {
        elasticsearch { 
-        hosts => "localhost:9200"
-	index => "file-name"
+       hosts => "localhost:9200"
+       index => "file-name"
 	}
 }
